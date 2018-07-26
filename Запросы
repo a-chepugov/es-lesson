@@ -1,0 +1,140 @@
+# создание
+## с id документа
+POST /chat/doc/1
+{"message":"Привет!", "type":5, "user": {"id": 24}}
+
+## без id документа
+POST /chat/doc/
+{"message":"И тебе привет", "type":2, "user": {"id": 42}}
+
+POST /chat/doc
+{"message":"тест тест тест", "type":2, "user": {"id": 32}}
+
+POST /chat/doc
+{"message":"Это мой первый тест", "type":3, "user": {"id": 11}}
+
+POST /chat/doc
+{"message":"Мы уже обсуждали основные поисковики?", "type":1, "subject": "Планирование", "user": {"id": 11}}
+
+POST /chat/doc
+{"message":"telegram или icq?", "type":2, "subject": "поисковики", "user": {"id": 32}}
+
+POST /chat/doc
+{"message":"Ты смотрел сериал Alf?",  "subject":"Сериалы", "channel": "email"}
+
+
+# Чтение документа
+GET /chat/doc/1
+
+# Поиск
+GET /chat/doc/_search
+{"query":{"match_all":{}}}
+
+GET /chat/doc/_search
+{"query":{"match_none":{}}}
+
+
+## match
+### or
+POST /chat/doc/_search
+{"query":{"match":{"message":{"query":"первый тест"}}}}
+
+### and
+POST /chat/doc/_search
+{"query":{"match":{"message":{"query":"первый тест","operator":"and"}}}}
+
+## multi_match
+POST /chat/doc/_search
+{"query":{"multi_match":{"query":"поисковики","fields":["subject","message"]}}}
+
+
+## query_string
+POST /chat/doc/_search
+{"query":{"query_string":{"default_field":"message","query":"this AND test"}}}
+
+## query_string
+POST /chat/doc/_search
+{"query":{"query_string":{"default_field":"message","query":"this AND test"}}}
+
+
+## term
+POST /chat/doc/_search
+{"query":{"term":{"type":5}}}
+
+POST /chat/doc/_search
+{"query":{"term":{"user.id":42}}}
+
+## terms
+POST /chat/doc/_search
+{"query":{"terms":{"type":[2,5]}}}
+
+## range
+POST /chat/doc/_search
+{"query":{"range":{"type":{"gte":2,"lte":4}}}}
+
+## range
+POST /chat/doc/_search
+{"query":{"exists":{"field":"channel"}}}
+
+## wildcard
+POST /chat/doc/_search
+{"query":{"wildcard":{"message":"te*ram"}}}
+
+POST /chat/doc/_search
+{"query":{"wildcard":{"message":"a?f"}}}
+
+## regexp
+GET /chat/doc/_search
+{"query":{"regexp":{"message":"поисков.*"}}}
+
+## fuzzy
+POST /chat/doc/_search
+{"query":{"fuzzy":{"message":"первй"}}}
+
+
+POST /chat/doc/_search
+{"query":{"fuzzy":{"message":{"fuzziness":2,"value":"перй"}}}}
+
+
+# compoud
+POST /chat/doc/_search
+{"query":{"bool":{"must":[{"term":{"type":2}},{"fuzzy":{"message":{"fuzziness":2,"value":"тет"}}}]}}}
+
+# script
+GET /_search
+{
+    "query": {
+        "bool" : {
+            "must" : {
+                "script" : {
+                    "script" : {
+                        "source": "doc['num1'].value > 1",
+                        "lang": "painless"
+                     }
+                }
+            }
+        }
+    }
+}
+
+
+POST /chat/doc/_search
+{
+  "_source": true,
+  "script_fields": {
+    "___t___": {
+      "script": {
+        "source": "if (doc['user.id'].value > 30){return 'jedi'} else {return 'sith'}"
+      }
+    }
+  }
+}
+
+## по нескольким индексам
+
+# удаление
+## документа
+DELETE /chat/doc/1
+
+## индекса
+DELETE /chat/
