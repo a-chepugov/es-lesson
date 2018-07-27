@@ -84,7 +84,7 @@ POST /chat/doc/_search
 
 ## regexp
 GET /chat/doc/_search
-{"query":{"regexp":{"message":"[1-9]{3}"}}}
+{"query":{"regexp":{"message":"[1-9]{2}1"}}}
 
 ## fuzzy
 POST /chat/doc/_search
