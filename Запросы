@@ -20,7 +20,7 @@ POST /chat/doc
 {"message":"telegram или icq?", "type":2, "subject": "поисковики", "user": {"id": 32}}
 
 POST /chat/doc
-{"message":"Ты смотрел сериал Alf?",  "subject":"Сериалы", "channel": "email"}
+{"message":"Ты смотрел сериал Alf?", "subject":"кино", "channel": "email"}
 
 POST /chat/doc
 {"message":"мой телефон 911", "type":8, "subject": "песни", "user": {"id": 32}}
