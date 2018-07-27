@@ -1,7 +1,7 @@
 mkdir -p /opt/elasticsearch; cd /opt/elasticsearch
 
 # скачаем архив с официального сайта Elasticsearch и контрольную сумму
-wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.1.1.tar.gz
+``
 wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.1.1.tar.gz.sha512
 # проверка - проверка
 shasum -a 512 -c elasticsearch-6.1.1.tar.gz.sha512
