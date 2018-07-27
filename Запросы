@@ -33,7 +33,6 @@ GET /chat/doc/_search
 GET /chat/doc/_search
 {"query":{"match_none":{}}}
 
-
 ## match
 ### or
 POST /chat/doc/_search
@@ -101,34 +100,16 @@ POST /chat/doc/_search
 {"query":{"bool":{"must":[{"term":{"type":2}},{"fuzzy":{"message":{"fuzziness":2,"value":"тет"}}}]}}}
 
 # script
-GET /_search
-{
-    "query": {
-        "bool" : {
-            "must" : {
-                "script" : {
-                    "script" : {
-                        "source": "doc['num1'].value > 1",
-                        "lang": "painless"
-                     }
-                }
-            }
-        }
-    }
-}
-
-
 POST /chat/doc/_search
-{
-  "_source": true,
-  "script_fields": {
-    "___t___": {
-      "script": {
-        "source": "if (doc['user.id'].value > 30){return 'jedi'} else {return 'sith'}"
-      }
-    }
-  }
-}
+{"_source":true,"script_fields":{"___t___":{"script":{"source":"if (doc['user.id'].value > 30){return 'jedi'} else {return 'sith'}"}}}}
+
+## aggs
+POST /chat/doc/_search
+{"aggs":{"user":{"terms":{"field":"user.id"}}}}
+
+## дичь
+POST /chat/doc/_search
+{"_source":true,"query":{"terms":{"type":[1,2,3]}},"aggs":{"user":{"terms":{"field":"user.id"}}},"script_fields":{"___t___":{"script":{"source":"if (doc['user.id'].value > 30){return 'jedi'} else {return 'sith'}"}}},"size":20,"from":1}
 
 ## по нескольким индексам
 
